@@ -1,0 +1,21 @@
+
+npm install --save-dev hardhat
+
+npm install --save-dev ethers
+npm install --save-dev ethers@5.7.2
+
+
+npx hardhat deploy --network localhost
+npx hardhat run scripts/upgrade.ts --network localhost
+
+
+
+ethers.getContract is not a function:
+yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ethers
+
+
+
+
+
+npx hardhat deploy --network bsctest
+npx hardhat run scripts/upgrade.ts --network bsctest
