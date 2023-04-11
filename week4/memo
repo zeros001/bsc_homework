@@ -19,3 +19,15 @@ yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ether
 
 npx hardhat deploy --network bsctest
 npx hardhat run scripts/upgrade.ts --network bsctest
+
+
+
+verify:
+
+impl v1
+npx hardhat verify --network bsctest 0x3c884751Dfc702198222B7cfA7224a346Fd1569B
+
+impl v2, proxy
+npx hardhat run scripts/verify_test.ts --network bsctest
+
+

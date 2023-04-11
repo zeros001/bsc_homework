@@ -1,3 +1,8 @@
+
+//ref
+//https://medium.com/coinmonks/transparent-upgradable-smart-contracts-a-guide-with-code-explanation-465a486ca1df
+
+
 const { developmentChains, VERIFICATION_BLOCK_CONFIRMATIONS } = require("./helper-hardhat-config.js")
 const { ethers, network, deployments, getNamedAccounts } = require("hardhat")
 const { verify } = require("./helper-functions.js")
@@ -21,7 +26,7 @@ async function main() {
     })
 
     // Verify the deployment
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    if (!developmentChains.includes(network.name) && process.env.BSCSCAN_API_KEY) {
         log("Verifying...")
         await verify(impl.address, [])
     }
@@ -44,3 +49,5 @@ main()
         console.error(error)
         process.exit(1)
     })
+
+
