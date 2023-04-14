@@ -1,44 +1,52 @@
-// import { task, types } from "hardhat/config";
-// import { readAddressList } from "../scripts/helper";
-// import { StandardImpl__factory } from "../typechain-types";
+import { task, types } from "hardhat/config";
 
-// task("getValue").setAction(async (_, hre) => {
-//   const { network } = hre;
-//   const [dev] = await hre.ethers.getSigners();
-//   const addressList = readAddressList();
 
-//   const myContract = new StandardImpl__factory(dev).attach(
-//     addressList[network.name].MyContract
-//   );
-//   const value = await myContract.value();
-//   console.log("value: ", value.toString());
-// });
+task("getVersion").setAction(async (_, hre) => {
+  //const { network } = hre;
+  //const [dev] = await hre.ethers.getSigners();
 
-// task("getVersion").setAction(async (_, hre) => {
-//   const { network } = hre;
-//   const [dev] = await hre.ethers.getSigners();
-//   const addressList = readAddressList();
+  const transparentProxy = await hre.ethers.getContract("StandardImpl_Proxy")
 
-//   const myContract = new StandardImpl__factory(dev).attach(
-//     addressList[network.name].MyContract
-//   );
-//   const version = await myContract.VERSION();
-//   console.log("version: ", version.toString());
-// });
+  //hre.ethers  也可以如下直接写成ethers
+  const proxy = await ethers.getContractAt("StandardImpl_v2", transparentProxy.address)
+  const version = await proxy.version()
 
-// task("setValue")
-//   .addParam("value", "The value to set", undefined, types.int)
-//   .setAction(async (taskArgs, hre) => {
-//     const { network } = hre;
-//     const [dev] = await hre.ethers.getSigners();
-//     const addressList = readAddressList();
+  //不能这样调用，会出错
+  //TypeError: transparentProxy.version is not a function
+  //const version = await transparentProxy.version()
 
-//     const myContract = new StandardImpl__factory(dev).attach(
-//       addressList[network.name].MyContract
-//     );
-//     const tx = await myContract.setValue(taskArgs.value);
-//     console.log("tx: ", await tx.wait());
+  console.log('version : ', version.toString())
+});
 
-//     const currentValue = await myContract.value();
-//     console.log("currentValue: ", currentValue.toString());
-//   });
+
+task("getValue").setAction(async (_, hre) => {
+
+  const transparentProxy = await hre.ethers.getContract("StandardImpl_Proxy")
+
+  const proxy = await hre.ethers.getContractAt("StandardImpl_v2", transparentProxy.address)
+  const value = await proxy.value()
+
+  //这样调用会打印出一个js函数定义来
+  //const value = await proxy.value
+
+  console.log('value : ', value.toString())
+});
+
+
+task("setValue")
+  .addParam("val", "The value to set", undefined, types.int)
+  .setAction(async (taskArgs, hre) => {
+
+    const transparentProxy = await hre.ethers.getContract("StandardImpl_Proxy")
+
+    const proxy = await hre.ethers.getContractAt("StandardImpl_v2", transparentProxy.address)
+    let value = await proxy.value()
+    console.log('oldValue : ', value.toString())
+
+    //set new value
+    const tx = await proxy.setValue(taskArgs.val);
+    console.log("tx: ", await tx.wait());
+
+    value = await proxy.value()
+    console.log('newValue : ', value.toString())
+  });

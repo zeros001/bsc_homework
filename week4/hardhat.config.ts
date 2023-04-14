@@ -4,7 +4,6 @@ import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 
 import "./tasks";
-import "./tasks/storageStructure";
 
 import * as dotenv from "dotenv";
 dotenv.config();

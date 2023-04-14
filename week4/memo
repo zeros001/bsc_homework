@@ -16,8 +16,10 @@ yarn add --dev hardhat @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers ether
 
 
 
-
+部署：
 npx hardhat deploy --network bsctest
+
+升级合约：
 npx hardhat run scripts/upgrade.ts --network bsctest
 
 
@@ -31,3 +33,7 @@ impl v2, proxy
 npx hardhat run scripts/verify_test.ts --network bsctest
 
 
+task:
+npx hardhat --network bsctest getVersion
+npx hardhat --network bsctest getValue
+npx hardhat --network bsctest setValue --val 10000
